@@ -1,0 +1,54 @@
+import java.util.*;
+import java.io.*;
+
+ class Solution{
+    static int n,m,sheep,wolf,k,v;
+    static char[][] ar;
+    static int[][] vis;
+    static int[] dx={1,-1,0,0};
+    static int[] dy={0,0,1,-1};
+    static boolean ok;
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        n=sc.nextInt(); m=sc.nextInt();
+        ar=new char[n][m];
+        vis=new int[n][m];
+        for(int i=0;i<n;i++)ar[i]=sc.next().toCharArray();
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+            if(vis[i][j]==0 && (ar[i][j]=='k' || ar[i][j]=='v')){
+                k=0;v=0;
+                boolean ok=false;
+                dfs(i,j);
+                
+                if(k>v && !ok)sheep+=k;
+                else if(!ok && v>=k) wolf+=v;
+                else{
+                    sheep+=k;
+                    wolf+=v;
+                }
+                
+            }
+            }
+        }
+        System.out.println(sheep+" "+wolf);
+    }
+    static void dfs(int x,int y){
+        vis[x][y]=1;
+        if(ar[x][y]=='k')k++;
+        if(x==0 || y==0 || x==n-1 || y==m-1)ok=true;
+        else if(ar[x][y]=='v')v++;
+        for(int i=0;i<4;i++){
+            int cx=x+dx[i];
+            int cy=y+dy[i];
+            if(valid(cx,cy)){
+                dfs(cx,cy);
+            }
+        }
+    }
+    static boolean valid(int x,int y){
+        if(x<0 || x>=n || y<0 || y>=m || vis[x][y]==1 || ar[x][y]=='#')return false;
+        return true;
+    }
+}
