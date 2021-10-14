@@ -1,0 +1,73 @@
+import java.util.*;
+import java.io.*;
+
+ class Solution{
+    static ArrayList<Integer>[] gr;
+    static int[] degree;
+    public static void main(String[] args) throws Exception{
+      Fast sc=new Fast();
+       PrintWriter out=new PrintWriter(System.out);
+       
+        int n=sc.nextInt();
+        int m=sc.nextInt();
+        degree=new int[n+1];
+        gr=new ArrayList[n+1];
+        for(int i=0;i<=n;i++)
+        {gr[i]=new ArrayList<>();}
+
+        for(int i=0;i<m;i++){
+            int a=sc.nextInt();
+            int b=sc.nextInt();
+            gr[a].add(b);
+            degree[b]++;
+        }
+        Queue<Integer> q=new PriorityQueue<>();
+         for(int i=1;i<=n;i++){ if(degree[i]==0){q.add(i);}}
+         int cnt=0;
+    StringBuilder sb=new StringBuilder();
+        while(!q.isEmpty()){
+            int cur=q.peek();
+            sb.append(cur+" ");
+            q.poll();
+                 for(int a:gr[cur]){
+                
+                         degree[a]--;
+                if(degree[a]<=0)
+                     {q.add(a);
+                     }
+
+                 }
+                 cnt++;
+        }
+   if(cnt!=n)out.println("Sandro fails.");
+       else  System.out.println(sb);
+        out.close();
+        
+    }
+ 
+}
+class Fast{
+  BufferedReader br; 
+  StringTokenizer st;
+  public Fast(){ br=new BufferedReader(new InputStreamReader(System.in)); }
+  String next() 
+        {  while (st == null || !st.hasMoreElements()) 
+            {   try
+                {     st = new StringTokenizer(br.readLine()); } 
+                catch (IOException  e) 
+                {    e.printStackTrace(); } 
+            } 
+            return st.nextToken(); 
+        }
+  int nextInt(){  return Integer.parseInt(next()); }
+  long nextLong(){     return Long.parseLong(next()); } 
+  double nextDouble() {     return Double.parseDouble(next()); } 
+  String nextLine() 
+        { 
+            String str = ""; 
+            try{      str = br.readLine(); } 
+            catch (IOException e)  {  e.printStackTrace(); } 
+            return str; 
+        } 
+}
+
